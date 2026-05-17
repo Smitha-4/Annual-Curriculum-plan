@@ -6,14 +6,17 @@
     <title>Quest Academy - Annual Curriculum Dashboard</title>
     <style>
         :root {
-            --bg-dark: #121214;
-            --bg-card: #1e1e24;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --border: #374151;
-            --success: #10b981;
+            --bg-dark: #0a0a0c;       /* Deep obsidian black */
+            --bg-card: #121216;       /* Clean dark carbon gray */
+            --bg-hover: #1a1a22;      /* Subtle item highlight */
+            --text-main: #f3f4f6;     /* High contrast white */
+            --text-muted: #9ca3af;    /* Soft readable gray */
+            --accent: #818cf8;        /* Vivid electric indigo */
+            --accent-glow: rgba(129, 140, 248, 0.15);
+            --border: #262630;        /* Sharp low-light division lines */
+            --success: #34d399;       /* Emerald neon accent */
+            --warning: #fbbf24;       /* Soft amber accent */
+            --info: #60a5fa;          /* Vibrant cyan accent */
         }
 
         * {
@@ -37,43 +40,46 @@
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 25px 20px;
             position: fixed;
             height: 100vh;
         }
 
         .sidebar h2 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 25px;
-            color: var(--accent);
+            color: var(--text-main);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 10px;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            text-align: center;
         }
 
         .grade-btn {
             background: transparent;
             border: 1px solid transparent;
             color: var(--text-muted);
-            padding: 12px 15px;
+            padding: 12px 18px;
             text-align: left;
-            font-size: 1rem;
-            border-radius: 6px;
+            font-size: 0.95rem;
+            border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 8px;
-            transition: all 0.2s ease;
+            margin-bottom: 6px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .grade-btn:hover {
-            background-color: rgba(99, 102, 241, 0.1);
+            background-color: rgba(255, 255, 255, 0.03);
             color: var(--text-main);
         }
 
         .grade-btn.active {
-            background-color: var(--accent);
-            color: white;
+            background-color: var(--accent-glow);
+            border: 1px solid var(--accent);
+            color: var(--accent);
             font-weight: 600;
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.1);
         }
 
         /* Main Content Wrapper */
@@ -85,27 +91,33 @@
         }
 
         .header {
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;
+            padding-bottom: 25px;
         }
 
         .header h1 {
-            font-size: 2rem;
-            margin-bottom: 5px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .header p {
             color: var(--text-muted);
+            font-size: 1rem;
         }
 
         /* Table Design */
         .table-container {
             background-color: var(--bg-card);
-            border-radius: 8px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             overflow-x: auto;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
         }
 
         table {
@@ -115,21 +127,24 @@
         }
 
         th {
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: rgba(0, 0, 0, 0.2);
             color: var(--text-main);
             font-weight: 600;
-            padding: 16px;
-            border-bottom: 2px solid var(--border);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
             white-space: nowrap;
         }
 
         td {
-            padding: 16px;
+            padding: 18px 20px;
             border-bottom: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.95rem;
             vertical-align: top;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         tr:last-child td {
@@ -137,33 +152,34 @@
         }
 
         tr:hover td {
-            background-color: rgba(255, 255, 255, 0.01);
+            background-color: var(--bg-hover);
             color: var(--text-main);
         }
 
         /* Badges */
         .badge {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
             font-size: 0.8rem;
-            font-weight: bold;
+            font-weight: 600;
             text-align: center;
+            border: 1px solid transparent;
         }
 
-        .badge-wd { background-color: #3b82f6; color: white; }
-        .badge-td { background-color: #10b981; color: white; }
-        .badge-tp { background-color: #f59e0b; color: white; }
+        .badge-wd { background-color: rgba(96, 165, 250, 0.1); border-color: rgba(96, 165, 250, 0.3); color: var(--info); }
+        .badge-td { background-color: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.3); color: var(--success); }
+        .badge-tp { background-color: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); color: var(--warning); }
 
         .remarks-text {
             font-style: italic;
-            color: #a78bfa;
+            color: #c084fc; /* Amethyst neon tone */
         }
 
         /* Responsive Configuration */
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; }
             .main-content { margin-left: 0; padding: 20px; }
         }
     </style>
@@ -171,7 +187,7 @@
 <body>
 
     <div class="sidebar">
-        <h2>Quest Academy</h2>
+        <h2>Quest Matrix</h2>
         <button class="grade-btn active" onclick="loadGrade(1)">Grade 1</button>
         <button class="grade-btn" onclick="loadGrade(2)">Grade 2</button>
         <button class="grade-btn" onclick="loadGrade(3)">Grade 3</button>
@@ -355,11 +371,11 @@
                 const tr = document.createElement('tr');
                 
                 tr.innerHTML = `
-                    <td><strong>${rowData[0]}</strong></td>
+                    <td><strong style="color: #fff;">${rowData[0]}</strong></td>
                     <td><span class="badge badge-wd">${rowData[1]}</span></td>
                     <td><span class="badge badge-td">${rowData[2]}</span></td>
                     <td><span class="badge badge-tp">${rowData[3]}</span></td>
-                    <td><strong>${rowData[4].split(' / ')[0]}</strong><br><small style="color:var(--text-muted)">${rowData[4].split(' / ')[1] || ''}</small></td>
+                    <td><strong style="color: var(--text-main);">${rowData[4].split(' / ')[0]}</strong><br><small style="color:var(--text-muted)">${rowData[4].split(' / ')[1] || ''}</small></td>
                     <td>${rowData[5]}</td>
                     <td>${rowData[6]}</td>
                     <td><span style="color:#60a5fa; font-weight:600;">${rowData[7]}</span></td>
