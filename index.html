@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Academy - Annual Curriculum Dashboard</title>
+    <style>
+        :root {
+            --bg-dark: #121214;
+            --bg-card: #1e1e24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --border: #374151;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .grade-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .grade-btn:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--text-main);
+        }
+
+        .grade-btn.active {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Content Wrapper */
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1400px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+        }
+
+        /* Table Design */
+        .table-container {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 16px;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+            color: var(--text-main);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .badge-wd { background-color: #3b82f6; color: white; }
+        .badge-td { background-color: #10b981; color: white; }
+        .badge-tp { background-color: #f59e0b; color: white; }
+
+        .remarks-text {
+            font-style: italic;
+            color: #a78bfa;
+        }
+
+        /* Responsive Configuration */
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Quest Academy</h2>
+        <button class="grade-btn active" onclick="loadGrade(1)">Grade 1</button>
+        <button class="grade-btn" onclick="loadGrade(2)">Grade 2</button>
+        <button class="grade-btn" onclick="loadGrade(3)">Grade 3</button>
+        <button class="grade-btn" onclick="loadGrade(4)">Grade 4</button>
+        <button class="grade-btn" onclick="loadGrade(5)">Grade 5</button>
+        <button class="grade-btn" onclick="loadGrade(6)">Grade 6</button>
+        <button class="grade-btn" onclick="loadGrade(7)">Grade 7</button>
+        <button class="grade-btn" onclick="loadGrade(8)">Grade 8</button>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1 id="grade-title">Grade 1 Curriculum Plan</h1>
+            <p id="grade-desc">Academic Year 2026-2027 (1 Session/Week Framework)</p>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>W Ds</th>
+                        <th>T Ds</th>
+                        <th>T Ps</th>
+                        <th>Topic / Subtopic</th>
+                        <th>Competencies</th>
+                        <th>Extension Activity</th>
+                        <th>Global Outlook</th>
+                        <th>ID Linkage</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody id="curriculum-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Data Vault containing mapping for all grade profiles
+        const curriculumData = {
+            1: {
+                desc: "Academic Year 2026-2027 (1 Session / Week Framework)",
+                rows: [
+                    ["June", "26", "4", "4", "Computer Basics / Identifying Parts", "Recognizing monitor, keyboard, mouse, and CPU safely.", "Hardware I Spy hunting games in lab.", "Knowledgeable", "Literacy", "Teach gentle handling models."],
+                    ["July", "27", "4", "4", "Motor Skills / Mouse Controls", "Mastering holding, moving cursors, and single-clicking maps.", "Bubble Pop interaction gaming.", "Inquirer", "Art", "Provide kid-friendly smaller grips."],
+                    ["August", "26", "4", "4", "Intro to AI / Machines that See", "Understanding face recognition matrices and smart tracking assistant concepts.", "The Smile Detector camera simulation rules.", "Open-minded", "Social-Emotional", "Focus entirely on fun elements."],
+                    ["September", "25", "4", "4", "Algorithmic Thinking / Sequences", "Executing sequential orders and directional turns (U/D/L/R).", "Feed the Monkey floor navigation maps.", "Thinker", "Math", "Great kinetic movement patterns."],
+                    ["October", "26", "4", "4", "Hardware Interfacing / Quarky Intro", "Introducing physical parts, power blocks, and switches safely.", "Robot Wake-Up basic power cycles.", "Risk-taker", "Science", "Battery management strict oversight."],
+                    ["November", "25", "4", "4", "Physical Expressions / Light Controls", "Programming simple commands to change RGB color configurations.", "The Traffic Light state animations.", "Communicator", "Civics", "Use easy single-click block triggers."],
+                    ["December", "26", "4", "4", "Acoustic Feedback / Sound Triggers", "Activating pre-set buzzer tones and rhythmic musical audio parameters.", "The Animal Robot sound triggers.", "Open-minded", "Music", "Keep base lab volumes moderate."],
+                    ["January", "26", "4", "4", "Logical Sequences / Debugging Tasks", "Recognizing missed instructions or scrambled steps inside a flow.", "Scrambled Morning Routine sorting arrays.", "Reflective", "Literacy", "Frame troubleshooting as a tracking game."],
+                    ["February", "24", "4", "4", "Digital Artistry / Painting Intros", "Utilizing canvas brush variants, sizing edits, and primary fills.", "My Digital Garden canvas project.", "Caring", "Art", "Teach canvas reset logic cleanly."],
+                    ["March", "27", "4", "4", "Junior Innovation / Showcases", "Synthesizing multi-color states or base tracks into finished projects.", "The Junior Code Parade parent showcase.", "Reflective", "Public Speaking", "Celebrate basic effort values."]
+                ]
+            },
+            2: {
+                desc: "Academic Year 2026-2027 (1 Session / Week Framework)",
+                rows: [
+                    ["June", "26", "4", "4", "Digital Foundations / Mouse Precision", "Honing double-clicks, dragging inputs, and icon location arrays.", "Drag-and-Drop Maze configuration metrics.", "Inquirer", "Art", "Monitor fine-motor development profiles."],
+                    ["July", "27", "4", "4", "Intro to AI / Smart Computer Vision", "Tracking how AI models isolate physical features and voice scripts.", "The Smart Camera profile recognition.", "Inquirer", "Science", "Ensure clean ambient room light balances."],
+                    ["August", "26", "4", "4", "Digital Artistry / Advanced MS Paint", "Adding clean textual captions and custom color mix palettes.", "My Digital Greeting Card creation loop.", "Caring", "Literacy", "Leverage undo tools to manage resilience."],
+                    ["September", "25", "4", "4", "Algorithmic Logic / Unplugged Grids", "Formulating rigid direction instructions across grid planes.", "The Broken Robot floor navigation challenges.", "Thinker", "Math", "Excellent module prior to writing script."],
+                    ["October", "26", "4", "4", "Intro to Robotics / Hardware Light Arrays", "Mapping script variables directly to physical matrix LEDs.", "The Mood Indicator color profile shifts.", "Risk-taker", "Social-Emotional", "Isolate short single-step tracking blocks."],
+                    ["November", "25", "4", "4", "Physical Computing / Touch Sensors", "Interfacing physical pressure inputs with robotic response nodes.", "The Petted Robot responsive buzzer logs.", "Inquirer", "Science", "Enforce light handling on copper pads."],
+                    ["December", "26", "4", "4", "Computational Logic / Debugging Steps", "Identifying and fixing sequential errors inside scrambled paths.", "Fix the Recipe timeline proofing layouts.", "Reflective", "Literacy", "Emphasize troubleshooting as natural design."],
+                    ["January", "26", "4", "4", "Digital Storytelling / Sprite Control", "Altering scales, staging custom backgrounds, and moving objects.", "The Changing Environment timeline transitions.", "Open-minded", "Geography", "Focus on clean landscape switches."],
+                    ["February", "24", "4", "4", "Acoustic Coding / Loops & Sounds", "Triggering sequential media play clips inside looped tracks.", "The Rhythmic Soundboard block compositions.", "Communicator", "Music", "Align layouts with core music metrics."],
+                    ["March", "27", "4", "4", "Junior Capstone / Assembly Phase", "Combining animations, audio loops, and LED modules into a solution.", "The Quest Academy Junior Showcase panel.", "Reflective", "Public Speaking", "Track individual student confidence outputs."]
+                ]
+            },
+            3: {
+                desc: "Academic Year 2026-2027 (1 Session / Week Framework)",
+                rows: [
+                    ["June", "26", "4", "4", "Foundations of Computing / Directories", "Navigating file systems, creating directories, and nested architectures.", "The Filing Master structure sorting task.", "Knowledgeable", "History", "Isolate file structures from application loops."],
+                    ["July", "27", "4", "4", "Computational Thinking / Coordinates", "Decomposing step tracks; intro to X-Y sprite canvas coordinates.", "Sprite Animation tracking loops.", "Thinker", "Math", "Clarify instant jumps vs glide steps."],
+                    ["August", "26", "4", "4", "Hardware & Physical Intros / Sensors", "Isolating sensor inputs (Touch/IR) from active outputs.", "The Sensor Detective hardware tracking validation.", "Inquirer", "Science", "Enforce safe component extraction loops."],
+                    ["September", "25", "4", "4", "Advanced Block Operations / Loop Units", "Constructing iterative repeat structures to reduce code volume.", "The Infinite Loop execution script testing.", "Thinker", "Math", "Map loops to repeated addition matrices."],
+                    ["October", "26", "4", "4", "Autonomous Logic / Obstacle Boundaries", "Configuring ultrasonic echo telemetry to evaluate block distances.", "The Safe Rover emergency braking project.", "Risk-taker", "Physics", "Account for reflection absorption states."],
+                    ["November", "25", "4", "4", "Interaction Coding / Data Variables", "Defining variables as containers; setting text strings or numbers.", "The Tally Counter UI interface construction.", "Knowledgeable", "Math", "Isolate initializing steps from increment rules."],
+                    ["December", "26", "4", "4", "Environmental Modeling / Smart Logic", "Applying branching conditions to automate environment scripts.", "The Automation Gate logic tracking array.", "Caring", "EVS", "Build structural logic trees step by step."],
+                    ["January", "26", "4", "4", "Digital Literacy / Broadcasts", "Leveraging parallel execution messaging loops between sprites.", "The Dialogue Script multi-character conversations.", "Communicator", "Language", "Keep broadcast messages uniquely labeled."],
+                    ["February", "24", "4", "4", "Acoustics & Interfacing / Tone Shift", "Modifying buzzer registers, frequencies, and duration variables.", "The Tone Synthesizer frequency generator.", "Open-minded", "Music", "Coordinate directly with scale parameters."],
+                    ["March", "27", "4", "4", "Capstone Engineering / System Synthesis", "Assembling loops, sensors, and state indicators into a layout.", "The Junior Innovation Fair final defense logs.", "Reflective", "Public Speaking", "Prioritize tracking individual configuration mastery."]
+                ]
+            },
+            4: {
+                desc: "Academic Year 2026-2027 (1 Session / Week Framework)",
+                rows: [
+                    ["June", "26", "4", "4", "Microcontrollers & Circuits / Base Pins", "Evaluating ESP32 structures and physical pin configurations.", "Human Circuit loop conductivity validation tools.", "Inquirer", "Science", "Enforce pin protections against physical force."],
+                    ["July", "27", "4", "4", "Advanced Messaging / Multi-Node Tracks", "Creating systemic inter-device cross-trigger messaging flows.", "The Relay Race cross-module execution flow.", "Communicator", "Literacy", "Eliminate redundant loop blocks to limit lag."],
+                    ["August", "26", "4", "4", "Loops & Patterning / Code Optimization", "Nesting iteration loops to handle coordinate drawing sequences.", "Symmetry Art canvas shape tracking configurations.", "Thinker", "Math", "Introduce clear conditional loop breaks."],
+                    ["September", "25", "4", "4", "Intro to AI Vision / Shape Classification", "Deploying visual tracking modules to map contour parameters.", "The Fruit Sorter model classification script.", "Inquirer", "Science", "Isolate camera tracking blocks from clutter."],
+                    ["October", "26", "4", "4", "Autonomous Systems / IR Thresholds", "Tuning surface reflection data arrays for autonomous steering.", "The Maze Runner vehicle steering calibration.", "Risk-taker", "Physics", "Set variable baselines matching floors."],
+                    ["November", "25", "4", "4", "Data Science Intro / Metric Collection", "Logging variable variations over long intervals manually.", "The Light Detective room mapping profile.", "Knowledgeable", "Math", "Chart data curves manually prior to scripting output."],
+                    ["December", "26", "4", "4", "Smart Home Automation / Condition Gates", "Nesting structural if-else logic arrays matching sensor flags.", "The Welcome Bot security integration grid.", "Caring", "EVS", "Build logical verification loops cleanly."],
+                    ["January", "26", "4", "4", "AI for Accessibility / Assistive Control", "Configuring vision recognition tools for accessible mapping.", "The Sign Language Translator device model.", "Caring", "Civics", "Ensure clear background conditions during collection."],
+                    ["February", "24", "4", "4", "Generative AI & Sound / Frequency Models", "Composing music parameters matching block-based equations.", "The AI Composer tone layout optimization.", "Open-minded", "Music", "Fabulous crossover for cross-subject showcase."],
+                    ["March", "27", "4", "4", "Capstone Engineering / Prototype Expos", "Assembling physical computing hulls with multi-system scripts.", "The Smart City Expo final structural panel.", "Reflective", "Public Speaking", "Focus heavily on autonomous error tracking."]
+                ]
+            },
+            5: {
+                desc: "Academic Year 2026-2027 (1 Session / Week Framework)",
+                rows: [
+                    ["June", "26", "4", "4", "Introduction to Block Coding & Sprites", "Mastering UI layouts, coordinates, and sprite controls.", "Human Sprite physical grid path calculations.", "Inquirer", "Math", "Ensure stage coordinates match grid pixels."],
+                    ["July", "27", "4", "4", "Variables & Mathematical Logic", "Manipulating global indicators via mathematical equations.", "The Clicker Scorekeeper variable tracking block.", "Thinker", "Math", "Isolate differences between set and change blocks."],
+                    ["August", "26", "4", "4", "Conditional Execution / Logic Trees", "Nesting branch statements based on multiple dynamic conditions.", "The Condition Maze variable tracking matrices.", "Reflective", "Civics", "Introduce relational operations elegantly (<, >, =)."],
+                    ["September", "25", "4", "4", "Hardware Interfacing / Port Configurations", "Evaluating peripheral connection pins on microcontroller components.", "The Circuit Builder structural port testing.", "Knowledgeable", "Science", "Protect exposed pin contacts during assembly."],
+                    ["October", "26", "4", "4", "Autonomous Navigation / Surface Reflection", "Programming reflection criteria metrics across dark path tracks.", "The Autonomous Delivery Bot line tracking system.", "Risk-taker", "Physics", "Calibrate hardware arrays for class light ambient."],
+                    ["November", "25", "4", "4", "Advanced Robotics / Sound Architectures", "Altering hardware buzzer scales, durations, and tone variables.", "The Digital Orchestra structural melody engine.", "Communicator", "Music", "Excellent setup loop for interdisciplinary show."],
+                    ["December", "26", "4", "4", "Internet of Things / Smart Infrastructure", "Simulating local area network routing patterns.", "The Local Network data routing tracking array.", "Knowledgeable", "Geography", "Prepares students for actual networking protocols."],
+                    ["January", "26", "4", "4", "Data Science / Environmental Monitoring", "Logging analog ambient metrics over dynamic chart streams.", "The Solar Tracker optimization logging system.", "Balanced", "Math/Science", "Graph parameters physically prior to code plotting."],
+                    ["February", "24", "4", "4", "Machine Learning / Vision Tracking", "Compiling local target sets to execute custom track movements.", "The Gesture Remote tracking model integration.", "Open-minded", "Science", "Ensure camera sample uniformity across runs."],
+                    ["March", "27", "4", "4", "Capstone Engineering / Innovation Expos", "Synthesizing full block architectures into distinct applications.", "The Quest Academy Innovation Expo defense logs.", "Reflective", "Public Speaking", "Prioritize individual configuration mastery logs."]
+                ]
+            },
+            6: {
+                desc: "Academic Year 2026-2027 (2 Sessions / Week Framework)",
+                rows: [
+                    ["June", "26", "8", "8", "Advanced Block Coding / Complex Indicators", "Managing dynamic multi-variable tracking timers and calculations.", "The Countdown Challenge multi-state loop system.", "Thinker", "Math", "Introduce strict descriptive variable naming rules."],
+                    ["July", "27", "8", "8", "Logical Operators / Complex Branching", "Evaluating conditions across multiple logic keys (AND/OR/NOT).", "The Security Vault complex condition grid.", "Reflective", "Civics", "Structure blocks clearly to prevent checking drops."],
+                    ["August", "26", "8", "8", "Intro to Python Scripting / Syntax Core", "Transitioning to raw text execution; prints and strings.", "The Conversational Bot Python text console application.", "Communicator", "Literacy", "Enforce low typo thresholds using easy terms."],
+                    ["September", "25", "8", "8", "Python Control / Text Conditionals", "Translating visual conditional branches to strict text spacing rules.", "The Indentation Map whiteboard structural layout.", "Knowledgeable", "Logic/Math", "Stress the fatal role of bad indent syntax."],
+                    ["October", "26", "8", "8", "Physical Architecture / Signal Pins", "Differentiating digital states from analog variable signal curves.", "The Smart Factory System hardware telemetry dashboard.", "Inquirer", "Science", "Enforce precise physical structural pin wiring lines."],
+                    ["November", "25", "8", "8", "Autonomous Navigation / Dual Array Logic", "Processing dual-input sensor array streams for path steering.", "The Maze Escape Bot intersection track calculator.", "Risk-taker", "Physics", "Dedicate ample periods to ground sensor tuning."],
+                    ["December", "26", "8", "8", "Acoustics & Signaling / Audio Modulations", "Looping custom frequency algorithms to parse information.", "The Morse Code Messenger audio script emulator.", "Communicator", "History", "Connect layouts to emergency civic alert formats."],
+                    ["January", "26", "8", "8", "Data Automation / Closed-Loop Tracking", "Configuring environmental sensors to drive live actuator switches.", "The Intelligent Green Space automated ecosystem project.", "Balanced", "EVS/Biology", "Ideal cross-functional project for lab display."],
+                    ["February", "24", "8", "8", "AI & Computer Vision / Classifications", "Training multi-tier classification models with sorting hooks.", "The Autonomous Waste Sorter live computer vision bot.", "Open-minded", "EVS", "Keep training backgrounds completely neutral."],
+                    ["March", "27", "8", "8", "Engineering Design / Capstone Synthetics", "Merging raw Python text commands with hardware chassis systems.", "The Quest Academy Tech Symposium public defense.", "Reflective", "Public Speaking", "Focus completely on self-directed structural debugging."]
+                ]
+            },
+            7: {
+                desc: "Academic Year 2026-2027 (2 Sessions / Week Framework)",
+                rows: [
+                    ["June", "26", "8", "8", "Object-Oriented Programming (OOP) / Classes", "Defining structural classes, parameters, attributes, and instances.", "The Virtual Zoo object initialization Python console app.", "Thinker", "Biology", "Highlight instance templates vs active memory objects."],
+                    ["July", "27", "8", "8", "OOP Mechanics / Data Encapsulation", "Configuring child inheritance models and locking private attributes.", "The Banking Prototype private access console loop.", "Principled", "Math/Finance", "Leverage structural inheritance to drop code bloat."],
+                    ["August", "26", "8", "8", "Advanced Python Structures / Data Arrays", "Parsing multi-dimensional index matrices using Lists & Dicts.", "The Inventory Manager dynamic database layout.", "Knowledgeable", "Economics", "Crucial unit to lock down before hardware wiring."],
+                    ["September", "25", "8", "8", "Hardware Integration / Servo Mechanisms", "Controlling explicit angular positions (0° to 180°) via text commands.", "The Automated Toll Gate angular movement verification.", "Inquirer", "Physics/Eng", "Validate input current metrics to stop stalls."],
+                    ["October", "26", "8", "8", "Environmental Automation / Ultrasonic Logic", "Translating sound reflection delays into metric distance tracking.", "The Automated Waste Compactor responsive actuator hub.", "Balanced", "EVS", "Set calibration filters for clean sound return loops."],
+                    ["November", "25", "8", "8", "Human-Robot Interfaces / Panel Displays", "Formatting text layouts, coordinate alignment, and OLED symbols.", "The Local Weather Station readout layout board.", "Communicator", "Design", "Handle boundary character limits to stop layout clips."],
+                    ["December", "26", "8", "8", "Introduction to AI / Semantic NLP Tools", "Processing text strings via intent modeling and token tracking.", "The Smart Helpdesk Bot sentiment sorting tool.", "Open-minded", "Linguistics", "Map multi-phrase variants to maintain accuracy scores."],
+                    ["January", "26", "8", "8", "Advanced AI / Speech-to-Text Automation", "Parsing processed human vocal frequencies into text execution blocks.", "The Hands-Free Lab Assistant vocal drive platform.", "Caring", "Acoustics", "Maintain low ambient noise thresholds when mapping."],
+                    ["February", "24", "8", "8", "Machine Learning / Supervised Frameworks", "Calculating linear predictive coefficients across continuous charts.", "The Energy Consumption Predictor linear data tracker.", "Thinker", "Math/Stats", "Ensure source files hold clean correlation metrics."],
+                    ["March", "27", "8", "8", "Engineering Design / Capstone Defense", "Integrating full Python OOP scripts with dynamic vision actions.", "The Quest Academy Engineering Colloquium showcase.", "Reflective", "Public Speaking", "Cultivate highly resilient debugging configurations."]
+                ]
+            },
+            8: {
+                desc: "Academic Year 2026-2027 (2 Sessions / Week Framework)",
+                rows: [
+                    ["June", "26", "8", "8", "Advanced Architectures / Search Optimization", "Evaluating execution time metrics; Binary vs Sequential algorithms.", "The Global Directory high-speed record scanner.", "Thinker", "Math", "Introduce students to time-complexity optimization metrics."],
+                    ["July", "27", "8", "8", "Supervised Machine Learning / KNN Spatial Models", "Calculating Euclidean spatial vectors to compute data proximity.", "The Botanical Classifier multidimensional sorting script.", "Knowledgeable", "Geometry", "Map grid vectors cleanly to optimize sorting view."],
+                    ["August", "26", "8", "8", "Predictive Modeling / Multi-Variable Lines", "Constructing automated trend calculations while checking system error.", "The Climate Trend Modeler long-range database tracker.", "Reflective", "EVS", "Connect this explicitly with core mathematics charts."],
+                    ["September", "25", "8", "8", "Unsupervised Learning / K-Means Clustering", "Determining centroid nodes to categorize unlabelled files.", "The Consumer Sorter buying habits classification console.", "Open-minded", "Economics", "Stress difference between labelled vs unlabelled inputs."],
+                    ["October", "26", "8", "8", "Physical Mobile Computing / Kinematics", "Driving H-bridge differential motor systems via native Python text.", "The Automated Rover spatial speed adjustment module.", "Inquirer", "Physics", "Monitor energy draw to avoid wheel velocity drift."],
+                    ["November", "25", "8", "8", "Autonomous Paths / Dead Reckoning Vectoring", "Calculating path layouts via encoder tracking and temporal logs.", "The Grid Surveyor vector polygon navigation loop.", "Risk-taker", "Geometry", "Friction changes between surfaces alter execution."],
+                    ["December", "26", "8", "8", "Advanced Computer Vision / Live Extraction", "Isolating bounding box tracking coordinates via real-time streaming.", "The Traffic Counter live stream telemetry counter.", "Knowledgeable", "Civics", "Analyze civic surveillance and tracking privacy rules."],
+                    ["January", "26", "8", "8", "Computer Vision Actuation / Closed-Loop Drive", "Interfacing live vision coordinates directly with vehicle steering.", "The Smart Delivery Chassis target seek system.", "Balanced", "Logistics", "Excellent project for industrial layout show."],
+                    ["February", "24", "8", "8", "Synthetic Intelligence / LLM System Frameworks", "Configuring optimal context guidelines and evaluating bias data.", "The Academic Reviewer custom text prompt filter.", "Reflective", "Philosophy", "Deconstruct model hallucination limits in generation engines."],
+                    ["March", "27", "8", "8", "Engineering Showcases / Capstone Defenses", "Deploying fully unified full-stack software blocks with automation hulls.", "The Quest Academy Innovation Colloquium master defense.", "Communicator", "Public Speaking", "Enforce total student ownership of code structures."]
+                ]
+            }
+        };
+
+        // UI Loader Controller function
+        function loadGrade(gradeNum) {
+            // Update Active Buttons styles
+            document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Fetch and set descriptions
+            const currentData = curriculumData[gradeNum];
+            document.getElementById('grade-title').innerText = `Grade ${gradeNum} Curriculum Plan`;
+            document.getElementById('grade-desc').innerText = currentData.desc;
+
+            // Target table body insertion point
+            const tbody = document.getElementById('curriculum-body');
+            tbody.innerHTML = ''; // Wipe past rows cleanly
+
+            // Build structural row templates dynamically
+            currentData.rows.forEach(rowData => {
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td><strong>${rowData[0]}</strong></td>
+                    <td><span class="badge badge-wd">${rowData[1]}</span></td>
+                    <td><span class="badge badge-td">${rowData[2]}</span></td>
+                    <td><span class="badge badge-tp">${rowData[3]}</span></td>
+                    <td><strong>${rowData[4].split(' / ')[0]}</strong><br><small style="color:var(--text-muted)">${rowData[4].split(' / ')[1] || ''}</small></td>
+                    <td>${rowData[5]}</td>
+                    <td>${rowData[6]}</td>
+                    <td><span style="color:#60a5fa; font-weight:600;">${rowData[7]}</span></td>
+                    <td><span style="color:#f472b6;">${rowData[8]}</span></td>
+                    <td class="remarks-text">${rowData[9]}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Initialize display configuration on primary load targeting Grade 1 data array
+        window.onload = function() {
+            loadGrade(1);
+        };
+    </script>
+</body>
+</html>
