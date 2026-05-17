@@ -31,9 +31,10 @@
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
+            flex-direction: row;
         }
 
-        /* Sidebar Styling */
+        /* --- Sidebar Layout (Desktop) --- */
         .sidebar {
             width: 260px;
             background-color: var(--bg-card);
@@ -43,6 +44,8 @@
             padding: 25px 20px;
             position: fixed;
             height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
         }
 
         .sidebar h2 {
@@ -56,6 +59,12 @@
             text-align: center;
         }
 
+        .grade-btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
         .grade-btn {
             background: transparent;
             border: 1px solid transparent;
@@ -65,8 +74,8 @@
             font-size: 0.95rem;
             border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 6px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
         }
 
         .grade-btn:hover {
@@ -82,12 +91,12 @@
             box-shadow: 0 0 15px rgba(129, 140, 248, 0.1);
         }
 
-        /* Main Content Wrapper */
+        /* --- Main Content Layout (Desktop) --- */
         .main-content {
             margin-left: 260px;
             flex-grow: 1;
             padding: 40px;
-            max-width: 1400px;
+            width: calc(100% - 260px);
         }
 
         .header {
@@ -111,13 +120,14 @@
             font-size: 1rem;
         }
 
-        /* Table Design */
+        /* --- Responsive Table Wrapper --- */
         .table-container {
             background-color: var(--bg-card);
             border-radius: 12px;
             border: 1px solid var(--border);
-            overflow-x: auto;
+            overflow-x: auto; /* Enables swipe-scrolling on mobile cards */
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
@@ -156,7 +166,7 @@
             color: var(--text-main);
         }
 
-        /* Badges */
+        /* --- Badges --- */
         .badge {
             display: inline-block;
             padding: 4px 10px;
@@ -173,14 +183,106 @@
 
         .remarks-text {
             font-style: italic;
-            color: #c084fc; /* Amethyst neon tone */
+            color: #c084fc;
         }
 
-        /* Responsive Configuration */
-        @media (max-width: 900px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; }
-            .main-content { margin-left: 0; padding: 20px; }
+        /* ==========================================================================
+           RESPONSIVE MEDIA QUERIES (Tablets & Mobile Screen Formats)
+           ========================================================================== */
+        
+        /* --- Tablet Breakpoint (Screen size under 1024px) --- */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+                padding: 20px 10px;
+            }
+            .sidebar h2 {
+                font-size: 0.95rem;
+                letter-spacing: 1px;
+            }
+            .grade-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            .main-content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+                padding: 30px 20px;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* --- Smartphone Breakpoint (Screen size under 768px) --- */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* Stacks navigation above the content main grid */
+            }
+
+            /* Transforms sidebar into a sticky top row scrolling tracker */
+            .sidebar {
+                position: sticky;
+                top: 0;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 12px 15px;
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+                overflow-x: auto;
+                white-space: nowrap;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            }
+
+            .sidebar h2 {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+                font-size: 0.9rem;
+                border-right: 1px solid var(--border);
+                padding-right: 15px;
+            }
+
+            .grade-btn-container {
+                flex-direction: row; /* Horizontal scrolling items button set */
+                gap: 8px;
+                overflow-x: auto;
+                width: 100%;
+            }
+
+            .grade-btn {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+
+            /* Main Content Container Reset */
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 15px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            /* Fluid adjustment inside data padding rows */
+            td, th {
+                padding: 12px 14px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -188,14 +290,16 @@
 
     <div class="sidebar">
         <h2>Quest Matrix</h2>
-        <button class="grade-btn active" onclick="loadGrade(1)">Grade 1</button>
-        <button class="grade-btn" onclick="loadGrade(2)">Grade 2</button>
-        <button class="grade-btn" onclick="loadGrade(3)">Grade 3</button>
-        <button class="grade-btn" onclick="loadGrade(4)">Grade 4</button>
-        <button class="grade-btn" onclick="loadGrade(5)">Grade 5</button>
-        <button class="grade-btn" onclick="loadGrade(6)">Grade 6</button>
-        <button class="grade-btn" onclick="loadGrade(7)">Grade 7</button>
-        <button class="grade-btn" onclick="loadGrade(8)">Grade 8</button>
+        <div class="grade-btn-container">
+            <button class="grade-btn active" onclick="loadGrade(1)">Grade 1</button>
+            <button class="grade-btn" onclick="loadGrade(2)">Grade 2</button>
+            <button class="grade-btn" onclick="loadGrade(3)">Grade 3</button>
+            <button class="grade-btn" onclick="loadGrade(4)">Grade 4</button>
+            <button class="grade-btn" onclick="loadGrade(5)">Grade 5</button>
+            <button class="grade-btn" onclick="loadGrade(6)">Grade 6</button>
+            <button class="grade-btn" onclick="loadGrade(7)">Grade 7</button>
+            <button class="grade-btn" onclick="loadGrade(8)">Grade 8</button>
+        </div>
     </div>
 
     <div class="main-content">
@@ -227,7 +331,7 @@
     </div>
 
     <script>
-        // Data Vault containing mapping for all grade profiles
+        // Full Data Matrix (Unchanged to keep complete curriculum arrays intact)
         const curriculumData = {
             1: {
                 desc: "Academic Year 2026-2027 (1 Session / Week Framework)",
@@ -353,9 +457,15 @@
 
         // UI Loader Controller function
         function loadGrade(gradeNum) {
-            // Update Active Buttons styles
+            // Update Active Buttons styles safely
             document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Find execution element context gracefully
+            if(event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                document.querySelector(`.grade-btn:nth-child(${gradeNum})`).classList.add('active');
+            }
 
             // Fetch and set descriptions
             const currentData = curriculumData[gradeNum];
